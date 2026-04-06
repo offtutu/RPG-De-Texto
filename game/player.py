@@ -1,8 +1,11 @@
+from game.classes import Guerreiro, Mago, Ladino
+
+
 # Ficha de Status
 
 # Identidade
-Nome_do_Personagem = input("Digite seu nome: ")
-Classe = input("Digite sua classe: ")
+Nome_do_Personagem = input("Digite seu nome: ").strip()
+Classe = input("Digite sua classe: ").strip()
 
 # Status de combate
 pontos = 6
@@ -41,13 +44,34 @@ else:
     print("=" * 30)
 
     # Calculo de vida
-    Hp = 6 + (Vigor * 5)
+    if Classe.lower() == "guerreiro":
+        Hp = 10 + (Vigor * 2) + Guerreiro["Bonus_de_Hp_G"]
+    elif Classe.lower() == "mago":
+        Hp = 10 + (Vigor * 2) + Mago["Bonus_de_Hp_M"]
+    elif Classe.lower() == "ladino":
+        Hp = 10 + (Vigor * 2) + Ladino["Bonus_de_Hp_L"]
+    else:
+        Hp = 10 + (Vigor * 2)
 
     # Calculo de defesa
-    Defesa = 3 + Fisico
+    if Classe.lower() == "guerreiro":
+        Defesa = 3 + (Fisico * 2) + Guerreiro["Bonus_de_Defesa_G"]
+    elif Classe.lower() == "mago":
+        Defesa = 3 + (Fisico * 2) + Mago["Bonus_de_Defesa_M"]
+    elif Classe.lower() == "ladino":
+        Defesa = 3 + (Fisico * 2) + Ladino["Bonus_de_Defesa_L"]
+    else:
+        Defesa = 3 + (Fisico * 2)
 
     # Calculo de ataque
-    Ataque = 3 + (Fisico * 2)
+    if Classe.lower() == "guerreiro":
+        Ataque = 3 + (Estilo * 2) + Guerreiro["Bonus_de_Ataque_G"]
+    elif Classe.lower() == "mago":
+        Ataque = 3 + (Estilo * 2) + Mago["Bonus_de_Ataque_M"]
+    elif Classe.lower() == "ladino":
+        Ataque = 3 + (Estilo * 2) + Ladino["Bonus_de_Ataque_L"]
+    else:
+        Ataque = 3 + (Estilo * 2)
 
     # Entrega de vida, defesa e ataque
     print("=" * 30)
