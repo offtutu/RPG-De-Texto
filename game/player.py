@@ -1,11 +1,10 @@
 from game.classes import Guerreiro, Mago, Ladino
 
-
 # Ficha de Status
 
 # Identidade
-Nome_do_Personagem = input("Digite seu nome: ").strip()
-Classe = input("Digite sua classe: ").strip()
+Nome_do_Personagem = input("Digite seu nome: ")
+Classe = input("Digite sua classe: ")
 
 # Status de combate
 pontos = 6
@@ -45,33 +44,34 @@ else:
 
     # Calculo de vida
     if Classe.lower() == "guerreiro":
-        Hp = 10 + (Vigor * 2) + Guerreiro["Bonus_de_Hp_G"]
+        Hp = 10 + (Vigor * 5) + Guerreiro["Bonus_de_Hp_G"]
     elif Classe.lower() == "mago":
-        Hp = 10 + (Vigor * 2) + Mago["Bonus_de_Hp_M"]
+        Hp = 10 + (Vigor * 5) + Mago["Bonus_de_Hp_M"]
     elif Classe.lower() == "ladino":
-        Hp = 10 + (Vigor * 2) + Ladino["Bonus_de_Hp_L"]
+        Hp = 10 + (Vigor * 5) + Ladino["Bonus_de_Hp_L"]
     else:
-        Hp = 10 + (Vigor * 2)
+        Hp = 10 + (Vigor * 5)
+
 
     # Calculo de defesa
     if Classe.lower() == "guerreiro":
-        Defesa = 3 + (Fisico * 2) + Guerreiro["Bonus_de_Defesa_G"]
+        Defesa = 3 + Fisico + Guerreiro["Bonus_de_Defesa_G"]
     elif Classe.lower() == "mago":
-        Defesa = 3 + (Fisico * 2) + Mago["Bonus_de_Defesa_M"]
+        Defesa = 3 + Fisico + Mago["Bonus_de_Defesa_M"]
     elif Classe.lower() == "ladino":
-        Defesa = 3 + (Fisico * 2) + Ladino["Bonus_de_Defesa_L"]
+        Defesa = 3 + Fisico + Ladino["Bonus_de_Defesa_L"]
     else:
-        Defesa = 3 + (Fisico * 2)
+        Defesa = 3 + Fisico
 
     # Calculo de ataque
     if Classe.lower() == "guerreiro":
-        Ataque = 3 + (Estilo * 2) + Guerreiro["Bonus_de_Ataque_G"]
+        Ataque = 3 + Fisico + Guerreiro["Bonus_de_Ataque_G"]
     elif Classe.lower() == "mago":
-        Ataque = 3 + (Estilo * 2) + Mago["Bonus_de_Ataque_M"]
+        Ataque = 3 + Estilo + Mago["Bonus_de_Ataque_M"] + Mago["Bonus_de_Estilo_M"]
     elif Classe.lower() == "ladino":
-        Ataque = 3 + (Estilo * 2) + Ladino["Bonus_de_Ataque_L"]
+        Ataque = 3 + Fisico + Ladino["Bonus_de_Ataque_L"] + Ladino["Bonus_de_Estilo_L"]
     else:
-        Ataque = 3 + (Estilo * 2)
+        Ataque = 3 + Fisico
 
     # Entrega de vida, defesa e ataque
     print("=" * 30)
