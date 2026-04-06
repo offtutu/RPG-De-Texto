@@ -1,6 +1,6 @@
 # RPG de Texto em Python
 
-Projeto simples para praticar Python sem funcoes por enquanto.
+Projeto simples para praticar Python
 
 ## Estrutura
 
