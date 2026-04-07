@@ -1,6 +1,9 @@
+import random
+
 from game.player import Hp, Ataque, Defesa, Ficha_Valida
 from game.boss import Nome_Boss, Hp_Boss, Ataque_Boss, Defesa_Boss
 from game.magia import Fire_Ball, Ice_Ray, Light_Spheres
+from game.debuffs import Covarde
 
 if Ficha_Valida:
     # Definindo as variaveis de combate do player.
@@ -19,6 +22,10 @@ if Ficha_Valida:
     vida_do_boss = Hp_Boss
     defesa_do_boss = Defesa_Boss
     ataque_do_boss = Ataque_Boss
+    boss_ataca_primeiro = False
+    covardia_ativa = False
+    chance_falha_covardia = 0
+    combate_encerrado_por_fuga = False
 
     # Mini introducao do combate.
     print("=" * 30)
@@ -46,7 +53,12 @@ if Ficha_Valida:
     Escolha_Do_Duelo = input("Escolha uma opcao: ")
     if Escolha_Do_Duelo == "1":
         print("Voce aceita o duelo. Robertinho ja cai na sua pose de luta.")
-    else:
+    elif Escolha_Do_Duelo == "2":
+        boss_ataca_primeiro = Covarde["penalidade_instanea"]["boss_ataca_primeiro"]
+        chance_falha_covardia = Covarde["penalidade_em_combate"][
+            "chance_falha_ataque_magia"
+        ]
+        covardia_ativa = True
         print(
             "Voce recusa o duelo, mas Robertinho nao aceita um nao como resposta. "
             "Ele ja cai na sua pose de luta."
@@ -54,9 +66,12 @@ if Ficha_Valida:
         print(
             "Como penalidade pela recusa, o primeiro turno do combate e de Robertinho."
         )
+        print("Enquanto a covardia durar, voce tem 50% de chance de falhar em ataques e magias.")
+    else:
+        print("Opcao invalida. Robertinho interpreta sua indecisao como um aceite.")
 
     # Ataque inicial do boss caso o jogador recuse o duelo.
-    if Escolha_Do_Duelo == "2":
+    if boss_ataca_primeiro:
         if ataque_do_boss >= defesa_do_player:
             dano_do_boss = ataque_do_boss - defesa_do_player
             defesa_do_player = 0
@@ -66,6 +81,7 @@ if Ficha_Valida:
             dano_do_boss = 0
 
         print(f"{Nome_Boss} te acertou e te deu {dano_do_boss} de dano.")
+        boss_ataca_primeiro = False
 
     # Sistema de combate.
     while vida_do_player > 0 and vida_do_boss > 0:
@@ -81,13 +97,16 @@ if Ficha_Valida:
         Acao_Combate = input("Escolha sua acao: ")
 
         if Acao_Combate == "1":
-            if ataque_do_player >= defesa_do_boss:
-                dano_restante = ataque_do_player - defesa_do_boss
-                defesa_do_boss = 0
-                vida_do_boss -= dano_restante
+            if covardia_ativa and random.random() < chance_falha_covardia:
+                print("A covardia te trava e seu ataque falha.")
             else:
-                defesa_do_boss -= ataque_do_player
-            print(f"Voce acertou o boss, seu dano foi {ataque_do_player}.")
+                if ataque_do_player >= defesa_do_boss:
+                    dano_restante = ataque_do_player - defesa_do_boss
+                    defesa_do_boss = 0
+                    vida_do_boss -= dano_restante
+                else:
+                    defesa_do_boss -= ataque_do_player
+                print(f"Voce acertou o boss, seu dano foi {ataque_do_player}.")
         elif Acao_Combate == "2":
             print("Escolha uma magia para usar:")
             print("1 - Bola de Fogo")
@@ -99,17 +118,20 @@ if Ficha_Valida:
             if dano_magia is None:
                 print("Magia invalida. Voce perdeu a vez.")
                 dano_magia = 0
-
-            if dano_magia >= defesa_do_boss:
-                dano_restante = dano_magia - defesa_do_boss
-                defesa_do_boss = 0
-                vida_do_boss -= dano_restante
+            elif covardia_ativa and random.random() < chance_falha_covardia:
+                print("A covardia te trava e sua magia falha.")
             else:
-                defesa_do_boss -= dano_magia
+                if dano_magia >= defesa_do_boss:
+                    dano_restante = dano_magia - defesa_do_boss
+                    defesa_do_boss = 0
+                    vida_do_boss -= dano_restante
+                else:
+                    defesa_do_boss -= dano_magia
 
-            print(f"Voce usou a magia, seu dano foi {dano_magia}.")
+                print(f"Voce usou a magia, seu dano foi {dano_magia}.")
         elif Acao_Combate == "3":
-            print("Voce nao pode fugir bobalhao.")
+            combate_encerrado_por_fuga = True
+            break
         else:
             print("Essa opcao ainda nao existe.")
 
@@ -131,5 +153,7 @@ if Ficha_Valida:
         print("Voce foi morto por:", Nome_Boss)
     elif vida_do_boss <= 0:
         print(f"Voce matou o {Nome_Boss}")
+    elif combate_encerrado_por_fuga:
+        print("Voce fugiu do combate, mas ganhou a fama de covarde e isso trara consequencias.")
 else:
     print("O combate nao pode comecar porque a ficha do jogador ficou invalida.")
