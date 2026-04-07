@@ -4,7 +4,12 @@ from game.classes import Guerreiro, Mago, Ladino
 
 # Identidade
 Nome_do_Personagem = input("Digite seu nome: ")
-Classe = input("Digite sua classe: ")
+Classe = ""
+
+while Classe not in ("guerreiro", "mago", "ladino"):
+    Classe = input("Digite sua classe (Guerreiro, Mago ou Ladino): ").lower()
+    if Classe not in ("guerreiro", "mago", "ladino"):
+        print("Classe invalida. Escolha entre Guerreiro, Mago ou Ladino.")
 
 # Status de combate
 pontos = 6
