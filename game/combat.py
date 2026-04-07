@@ -10,8 +10,8 @@ if Ficha_Valida:
 
     # Definindo as variaveis de combate magico do player.
     dano_da_magia_do_player = {
-        "1": Fire_Ball["dano"],
-        "2": Ice_Ray["dano"],
+        "1": Fire_Ball["dano"] + Fire_Ball["dano_de_fogo"],
+        "2": Ice_Ray["dano"] + Ice_Ray["dano_de_gelo"],
         "3": Light_Spheres["dano"],
     }
 
